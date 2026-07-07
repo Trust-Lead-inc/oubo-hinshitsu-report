@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>東京スタッフサービス様 応募品質レポート｜2026年7月分（前月比較）</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{
+  --navy:#0a2342; --blue:#2563a8; --red:#dc2626; --green:#16a34a; --yellow:#d97706;
+  --lblue:#93c5fd; --lred:#fca5a5; --lgreen:#86efac;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  background:#f0f4f8; color:#1a2a3a;
+  font-family:'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;
+  font-size:14px; line-height:1.6;
+}
+.container{max-width:1100px;margin:0 auto;padding:0 16px 60px;}
+
+/* ===== Header ===== */
+header{
+  position:relative; overflow:hidden;
+  background:linear-gradient(135deg,#0a2342 0%,#1a4a7a 60%,#2563a8 100%);
+  color:#fff; padding:34px 40px 0; margin-bottom:28px;
+}
+header::before{content:"";position:absolute;top:-90px;right:-60px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.07);}
+header::after{content:"";position:absolute;bottom:-120px;right:140px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05);}
+.head-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;position:relative;z-index:1;}
+.head-left .company{font-size:15px;opacity:.9;margin-bottom:6px;}
+.head-left h1{font-size:26px;font-weight:700;line-height:1.3;}
+.head-left .subtitle{font-size:13px;opacity:.75;margin-top:4px;}
+.date-badge{background:rgba(255,255,255,.18);border-radius:20px;padding:6px 16px;font-size:12px;white-space:nowrap;}
+
+/* ===== month tabs ===== */
+.month-tabs{display:flex;gap:8px;margin-top:22px;position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.15);padding-top:14px;}
+.month-tab{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:9px 20px;font-size:13.5px;font-weight:700;cursor:pointer;transition:.2s;}
+.month-tab:hover{background:rgba(255,255,255,.22);}
+.month-tab.active{background:#fff;color:var(--navy);border-color:#fff;}
+.month-tab .tag{font-weight:400;font-size:11px;opacity:.75;margin-left:4px;}
+.month-tab.active .tag{opacity:.55;}
+
+nav{display:flex;gap:6px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1;padding-bottom:14px;}
+nav a{color:#fff;text-decoration:none;font-size:13px;padding:6px 12px;border-radius:6px;opacity:.85;transition:.2s;}
+nav a:hover{background:rgba(255,255,255,.15);opacity:1;}
+
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+section{margin-bottom:34px;}
+h2{font-size:19px;color:var(--navy);font-weight:700;margin-bottom:14px;padding-left:12px;border-left:4px solid var(--blue);}
+
+/* ===== KPI cards ===== */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;}
+.kpi-card{background:#fff;border-radius:12px;padding:18px 20px;box-shadow:0 1px 4px rgba(10,35,66,.08);}
+.kpi-card .label{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:#64748b;font-weight:600;}
+.kpi-card .value{font-size:26px;font-weight:700;margin:6px 0 2px;}
+.kpi-card .sub{font-size:11px;color:#94a3b8;}
+.v-green{color:var(--green);} .v-red{color:var(--red);} .v-yellow{color:var(--yellow);} .v-navy{color:var(--navy);} .v-blue{color:var(--blue);}
+
+/* ===== charts ===== */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.chart-card{background:#fff;border-radius:12px;padding:18px 20px;box-shadow:0 1px 4px rgba(10,35,66,.08);}
+.chart-card h3{font-size:14px;color:var(--navy);margin-bottom:10px;}
+.chart-wrap{position:relative;height:240px;}
+
+/* ===== table ===== */
+.table-card{background:#fff;border-radius:12px;padding:6px;box-shadow:0 1px 4px rgba(10,35,66,.08);overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead th{background:var(--navy);color:#fff;padding:10px 12px;text-align:right;font-weight:600;white-space:nowrap;}
+thead th:first-child{text-align:left;}
+tbody td{padding:9px 12px;text-align:right;border-bottom:1px solid #eef2f7;}
+tbody td:first-child{text-align:left;}
+tbody tr.highlight-row{background:#dbeafe;font-weight:700;}
+tbody tr.muted{opacity:.45;}
+.bad{color:var(--red);font-weight:700;}
+.good{color:var(--green);font-weight:700;}
+.footnote{font-size:11px;color:#94a3b8;padding:8px 12px 4px;}
+
+/* ===== eval ===== */
+.conclusion{background:#fff;border-left:5px solid var(--navy);border-radius:0 10px 10px 0;padding:16px 20px;margin-bottom:20px;box-shadow:0 1px 4px rgba(10,35,66,.08);font-size:15px;line-height:1.7;}
+.conclusion .badge{display:inline-block;background:var(--navy);color:#fff;font-size:12px;font-weight:700;border-radius:5px;padding:2px 10px;margin-right:10px;vertical-align:middle;}
+.conclusion strong{color:var(--blue);}
+.analysis-card{background:#fff;border-radius:12px;padding:6px;box-shadow:0 1px 4px rgba(10,35,66,.08);margin-top:20px;overflow:hidden;}
+.analysis-row{display:grid;grid-template-columns:130px 1fr;border-bottom:1px solid #eef2f7;}
+.analysis-row:last-child{border-bottom:none;}
+.analysis-row .alabel{padding:14px 16px;font-weight:700;color:#fff;display:flex;align-items:center;}
+.analysis-row .atext{padding:14px 18px;}
+.analysis-row .atext ul{list-style:disc;padding-left:18px;}
+.analysis-row .atext li{margin-bottom:6px;}
+.analysis-row .atext li:last-child{margin-bottom:0;}
+.al-problem{background:var(--red);} .al-issue{background:var(--yellow);} .al-cause{background:#475569;} .al-action{background:var(--green);}
+
+/* ===== comment box ===== */
+.comment{background:#eef5fc;border-left:4px solid var(--blue);border-radius:0 8px 8px 0;padding:14px 18px;margin-top:16px;font-size:13.5px;}
+.comment .ctitle{font-weight:700;color:var(--navy);margin-bottom:4px;}
+.comment strong{color:var(--blue);}
+
+footer{text-align:center;color:#94a3b8;font-size:12px;border-top:1px solid #e2e8f0;padding-top:18px;margin-top:40px;}
+
+@media(max-width:768px){
+  header{padding:24px 20px 0;}
+  .chart-grid{grid-template-columns:1fr;}
+  .kpi-grid{grid-template-columns:repeat(2,1fr);}
+  .analysis-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="head-top">
+    <div class="head-left">
+      <div class="company">🏢 東京スタッフサービス様</div>
+      <h1>応募品質レポート（月次・前月比較）</h1>
+      <div class="subtitle">長期案件への応募状況を中心に、有効応募・選考状況を分析</div>
+    </div>
+    <div class="date-badge">作成日：2026年7月6日</div>
+  </div>
+  <div class="month-tabs">
+    <button class="month-tab active" data-tab="cur">今月<span class="tag">2026年7月（進行中・7/1〜7/6）</span></button>
+    <button class="month-tab" data-tab="prev">前月<span class="tag">2026年6月（確定）</span></button>
+  </div>
+  <nav>
+    <a href="#kpi-cur">概要</a>
+    <a href="#funnel-cur">応募の振り分け</a>
+    <a href="#invalid-cur">無効理由</a>
+    <a href="#age-cur">年齢層</a>
+    <a href="#case-cur">案件別</a>
+    <a href="#eval-cur">総評</a>
+  </nav>
+</header>
+
+<div class="container">
+
+<!-- ============ 今月（2026年7月・進行中） ============ -->
+<div class="tab-panel active" id="panel-cur">
+
+  <!-- ① 概要 -->
+  <section id="kpi-cur">
+    <h2>① サマリー（2026年7月・7/1〜7/6）</h2>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="label">全応募数</div>
+        <div class="value v-navy">98<span style="font-size:14px;">件</span></div>
+        <div class="sub">7月1日〜6日の総応募（進行中）</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">長期案件 応募数</div>
+        <div class="value v-yellow">5<span style="font-size:14px;">件</span></div>
+        <div class="sub">長期案件への応募率 5.1%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">有効応募数</div>
+        <div class="value v-green">4<span style="font-size:14px;">件</span></div>
+        <div class="sub">全体に対し 4.1%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">面談設定数</div>
+        <div class="value v-red">1<span style="font-size:14px;">件</span></div>
+        <div class="sub">有効4件中1件が面談設定済み</div>
+      </div>
+    </div>
+    <div class="comment">
+      <div class="ctitle">💬 コメント</div>
+      7月は<strong>6日分の速報値</strong>です。応募98件のうち長期案件への応募は<strong>5件（5.1%）</strong>、
+      有効応募は<strong>4件（4.1%）</strong>。長期案件への応募が少ない状態は前月から続いており、月後半にどこまで積み上がるかが論点です。
+      前月同時点との比較は「前月」タブでご確認いただけます。
+    </div>
+  </section>
+
+  <!-- ② 応募の振り分け -->
+  <section id="funnel-cur">
+    <h2>② 応募の振り分け</h2>
+    <div class="kpi-grid" style="margin-bottom:16px;">
+      <div class="kpi-card">
+        <div class="label">長期案件 応募率</div>
+        <div class="value v-yellow">5.1%</div>
+        <div class="sub">前月11.0%から低下（全応募98件中5件）</div>
+      </div>
+    </div>
+    <div class="kpi-grid" style="margin-bottom:16px;">
+      <div class="kpi-card">
+        <div class="label">有効応募</div>
+        <div class="value v-green">4<span style="font-size:14px;">件</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">面談設定</div>
+        <div class="value v-navy">1<span style="font-size:14px;">件</span></div>
+        <div class="sub">有効応募の25.0%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">面談実施</div>
+        <div class="value v-blue">ー</div>
+        <div class="sub">結果未入力（進行中）</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">面談未実施</div>
+        <div class="value v-red">ー</div>
+        <div class="sub">結果未入力（進行中）</div>
+      </div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>応募98件の内訳</h3>
+        <div class="chart-wrap"><canvas id="funnelChartCur"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>長期案件への絞り込み</h3>
+        <div class="chart-wrap"><canvas id="stageChartCur"></canvas></div>
+      </div>
+    </div>
+    <div class="comment">
+      <div class="ctitle">💬 コメント</div>
+      長期案件への応募は<strong>5件（全体の5.1%）</strong>と少なく、前月（11.0%）からさらに低下しています。
+      一方で応募後の有効化率は<strong>80.0%（5件中4件）</strong>と前月（62.5%）より高く、応募が入れば有効化しやすい状況は続いています。
+      母数が小さいため参考値ですが、まず<strong>長期案件への応募数自体を増やすこと</strong>が引き続きの課題です。
+    </div>
+  </section>
+
+  <!-- ③ 無効理由 -->
+  <section id="invalid-cur">
+    <h2>③ 無効応募の理由（長期案件）</h2>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>長期案件の無効理由（全1件）</h3>
+        <div class="chart-wrap"><canvas id="invalidChartCur"></canvas></div>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>長期案件 無効理由</th><th>件数</th></tr></thead>
+          <tbody>
+            <tr class="highlight-row"><td>年齢対象外</td><td>1</td></tr>
+            <tr><td>重複応募</td><td>0</td></tr>
+            <tr><td>外国籍</td><td>0</td></tr>
+            <tr style="font-weight:700;background:#f0f9ff;"><td>長期案件 無効 合計</td><td>1</td></tr>
+          </tbody>
+        </table>
+        <div class="footnote">参考：短期案件（対象外案件）への応募は85件、その他（選考中・ステータス未確定等）は8件です（全応募98件の内訳）。</div>
+      </div>
+    </div>
+    <div class="comment">
+      <div class="ctitle">💬 コメント</div>
+      7月の長期案件の無効は<strong>年齢対象外1件のみ</strong>です。件数は少ないものの、前月と同じく年齢対象外が唯一の無効理由になっています。
+    </div>
+  </section>
+
+  <!-- ④ 年齢層 -->
+  <section id="age-cur">
+    <h2>④ 年齢層分析（長期案件応募者）</h2>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>長期案件応募者の年齢層</h3>
+        <div class="chart-wrap"><canvas id="ageChartCur"></canvas></div>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>年齢層</th><th>件数</th></tr></thead>
+          <tbody>
+            <tr class="bad"><td>18歳（高校生）以下 ⚠️対象外</td><td>1</td></tr>
+            <tr><td>18〜19歳</td><td>1</td></tr>
+            <tr class="good"><td>20代</td><td>0</td></tr>
+            <tr><td>30代</td><td>0</td></tr>
+            <tr><td>40代</td><td>1</td></tr>
+            <tr><td>50代</td><td>2</td></tr>
+            <tr class="bad"><td>60歳以上 ⚠️対象外</td><td>8</td></tr>
+            <tr style="font-weight:700;background:#f0f9ff;"><td>合計</td><td>13</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="comment">
+      <div class="ctitle">💬 コメント</div>
+      7月も<strong>60歳以上が8件</strong>と最多で、前月と同じ年齢傾向が続いています。20〜50代は3件のみで、まだ6日分のため大きな判断は時期尚早です。
+    </div>
+  </section>
+
+  <!-- ⑤ 案件別 -->
+  <section id="case-cur">
+    <h2>⑤ 案件別 応募数（長期案件）</h2>
+    <div class="chart-grid">
+      <div class="table-card">
+        <table>
+          <thead><tr><th>クライアント</th><th>応募数</th></tr></thead>
+          <tbody>
+            <tr class="highlight-row"><td>石下様（I系）</td><td>1</td></tr>
+            <tr class="highlight-row"><td>平林様（H系）</td><td>1</td></tr>
+            <tr class="highlight-row"><td>吉田様（Y系）</td><td>2</td></tr>
+            <tr class="muted"><td>奥山様（O系）</td><td>0</td></tr>
+            <tr class="highlight-row"><td>須藤様（S系）</td><td>1</td></tr>
+            <tr style="font-weight:700;background:#f0f9ff;"><td>合計</td><td>5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="chart-card">
+        <h3>クライアント別 応募数</h3>
+        <div class="chart-wrap"><canvas id="caseChartCur"></canvas></div>
+      </div>
+    </div>
+    <div class="comment">
+      <div class="ctitle">💬 コメント</div>
+      7月に入ってからは<strong>吉田様（Y-31）に2件</strong>が集中し、石下様・平林様・須藤様は各1件ずつです。
+      6日分の速報のため、傾向としての判断は月半ば以降に行います。
+    </div>
+  </section>
+
+  <!-- ⑥ 総評 -->
+  <section id="eval-cur">
+    <h2>⑥ 総評（速報・2026年7月）</h2>
+
+    <div class="conclusion">
+      <span class="badge">結論</span>
+      7月は6日分の速報で有効応募<strong>4件（対全体4.1%）</strong>。長期案件への応募5件のうち4件（<strong>80.0%</strong>）が有効で、応募後の質は前月（62.5%）より高い水準です。
+      吉田様（Y-31）には早期から応募が入っており、最大の課題は前月に続き<strong>長期案件への応募数そのものが少ないこと</strong>です。
+    </div>
+
+    <div class="analysis-card">
+      <div class="analysis-row"><div class="alabel al-problem">問題</div>
+        <div class="atext">有効応募4件のうち面談設定は1件（25%）のみで、実施・採用の記録はまだない。前月から続く「応募後のフォロー」のボトルネックが7月も継続している。なお、長期案件への応募数自体も少ない状態（全応募98件中5件・5.1%）で、応募受付以降のプロセス改善と並行して注視が必要です。</div></div>
+      <div class="analysis-row"><div class="alabel al-issue">課題</div>
+        <div class="atext"><ul>
+          <li>まだ6日分のため件数は少ないが、面談設定率は前月（35%）とほぼ同水準</li>
+          <li>実施・採用の記録がなく、フォローのスピード感を確認できていない</li>
+          <li>前月と同様、初回コンタクトの成功率が今後の鍵になる</li>
+          <li>長期案件への応募が全体の5.1%（5/98件）と少なく、前月（11.0%）からさらに低下している</li>
+        </ul></div></div>
+      <div class="analysis-row"><div class="alabel al-cause">原因</div>
+        <div class="atext">月初のため件数自体が少なく評価しづらいが、前月と同じフォロー体制のままであれば同様の停滞が起きる可能性がある。長期案件への応募数自体が少ないのは掲載条件・訴求内容など募集要因側の影響も大きく、受付・フォロー体制だけでは解決できない部分もある。</div></div>
+      <div class="analysis-row"><div class="alabel al-action">対策</div>
+        <div class="atext"><ul>
+          <li>前月の対策（面談リマインドの徹底など）を7月も継続して運用する</li>
+          <li>有効応募4件の一次対応状況を個別に確認し、停滞させない</li>
+          <li>月半ばに面談設定率・実施率を再集計し、前月からの改善度を確認する</li>
+          <li>長期案件の応募数についても継続的にモニタリングし、必要に応じてクライアントへ掲載内容の改善を提案する</li>
+        </ul></div></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============ 前月（2026年6月・確定） ============ -->
+<div class="tab-panel" id="panel-prev">
+
+  <!-- ① 概要 -->
+  <section id="kpi-prev">
+    <h2>① サマリー（2026年6月・確定）</h2>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="label">全応募数</div>
+        <div class="value v-navy">291<span style="font-size:14px;">件</span></div>
+        <div class="sub">6月1日〜30日の総応募（確定）</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">長期案件 応募数</div>
+        <div class="value v-yellow">32<span style="font-size:14px;">件</span></div>
+        <div class="sub">長期案件への応募率 11.0%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">有効応募数</div>
+        <div class="value v-green">20<span style="font-size:14px;">件</span></div>
+        <div class="sub">全体に対し 6.9%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">面談設定数</div>
+        <div class="value v-red">7<span style="font-size:14px;">件</span></div>
+        <div class="sub">有効20件中7件が面談設定済み</div>
+      </div>
+    </div>
+    <div class="comment">
+      <div class="ctitle">💬 コメント</div>
+      6月の応募は全<strong>291件</strong>、長期案件への応募は<strong>32件（11.0%）</strong>、有効応募は<strong>20件（6.9%）</strong>でした。
+      長期案件への応募32件のうち20件（<strong>62.5%</strong>）が有効応募となっており、応募後の選考通過率自体は高い水準です。
+      課題は「短期案件が多いこと」ではなく、<strong>長期案件への応募そのものが少ないこと</strong>です（全応募291件中11.0%）。
+    </div>
+  </section>
+
+  <!-- ② 応募の振り分け -->
+  <section id="funnel-prev">
+    <h2>② 応募の振り分け</h2>
+    <div class="kpi-grid" style="margin-bottom:16px;">
+      <div class="kpi-card">
+        <div class="label">長期案件 応募率</div>
+        <div class="value v-yellow">11.0%</div>
+        <div class="sub">全応募291件中32件。応募の入り口の広さが課題</div>
+      </div>
+    </div>
+    <div class="kpi-grid" style="margin-bottom:16px;">
+      <div class="kpi-card">
+        <div class="label">有効応募</div>
+        <div class="value v-green">20<span style="font-size:14px;">件</span></div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">面談設定</div>
+        <div class="value v-navy">7<span style="font-size:14px;">件</span></div>
+        <div class="sub">有効応募の35.0%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">面談実施</div>
+        <div class="value v-blue">6<span style="font-size:14px;">件</span></div>
+        <div class="sub">設定7件の85.7%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">面談未実施</div>
+        <div class="value v-red">1<span style="font-size:14px;">件</span></div>
+        <div class="sub">応募者が面接当日に入室せず</div>
+      </div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>応募291件の内訳</h3>
+        <div class="chart-wrap"><canvas id="funnelChartPrev"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>長期案件への絞り込み</h3>
+        <div class="chart-wrap"><canvas id="stageChartPrev"></canvas></div>
+      </div>
+    </div>
+    <div class="comment">
+      <div class="ctitle">💬 コメント</div>
+      長期案件への応募は<strong>32件（全体の11.0%）</strong>に留まっています。長期案件32件の内訳は有効20件・無効12件で、応募後の有効化率は<strong>62.5%</strong>と高水準です。
+      仮に短期案件応募の一部でも長期案件に振り替えられれば、有効応募・面談・採用の増加が見込めます。<strong>応募数を増やすこと</strong>が最優先の課題です。
+    </div>
+  </section>
+
+  <!-- ③ 無効理由 -->
+  <section id="invalid-prev">
+    <h2>③ 無効応募の理由（長期案件）</h2>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>長期案件の無効理由（全12件）</h3>
+        <div class="chart-wrap"><canvas id="invalidChartPrev"></canvas></div>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>長期案件 無効理由</th><th>件数</th></tr></thead>
+          <tbody>
+            <tr class="highlight-row"><td>年齢対象外</td><td>11</td></tr>
+            <tr><td>重複応募</td><td>1</td></tr>
+            <tr><td>外国籍</td><td>0</td></tr>
+            <tr style="font-weight:700;background:#f0f9ff;"><td>長期案件 無効 合計</td><td>12</td></tr>
+          </tbody>
+        </table>
+        <div class="footnote">参考：短期案件（対象外案件）への応募は243件、その他（選考中・ステータス未確定等）は16件です（全応募291件の内訳）。</div>
+      </div>
+    </div>
+    <div class="comment">
+      <div class="ctitle">💬 コメント</div>
+      長期案件の無効理由は<strong>年齢対象外が11件</strong>と最多で、無効12件の9割超を占めます。重複応募1件・外国籍0件は僅少です。
+    </div>
+  </section>
+
+  <!-- ④ 年齢層 -->
+  <section id="age-prev">
+    <h2>④ 年齢層分析（長期案件応募者）</h2>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3>長期案件応募者の年齢層</h3>
+        <div class="chart-wrap"><canvas id="ageChartPrev"></canvas></div>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>年齢層</th><th>件数</th></tr></thead>
+          <tbody>
+            <tr class="bad"><td>18歳（高校生）以下 ⚠️対象外</td><td>3</td></tr>
+            <tr><td>18〜19歳</td><td>4</td></tr>
+            <tr class="good"><td>20代</td><td>4</td></tr>
+            <tr><td>30代</td><td>3</td></tr>
+            <tr><td>40代</td><td>7</td></tr>
+            <tr><td>50代</td><td>8</td></tr>
+            <tr class="bad"><td>60歳以上 ⚠️対象外</td><td>19</td></tr>
+            <tr style="font-weight:700;background:#f0f9ff;"><td>合計</td><td>48</td></tr>
+          </tbody>
+        </table>
+        <div class="footnote">※長期案件応募者の年齢集計はシート側の自動集計値です。長期案件応募数(32件)とは一致しません（重複計上等が含まれる可能性があります）。</div>
+      </div>
+    </div>
+    <div class="comment">
+      <div class="ctitle">💬 コメント</div>
+      長期案件応募者の年齢層は<strong>60歳以上が19件</strong>と最多です。年齢対象外（18歳以下3件＋60歳以上19件）は合計<strong>22件（45.8%）</strong>、
+      20〜50代は<strong>22件（45.8%）</strong>、残る18〜19歳は4件（8.3%）で合計48件です。年齢面での改善余地は60歳以上の応募を減らすことよりも、
+      <strong>20〜50代を中心に長期案件への応募数自体を増やすこと</strong>です。
+    </div>
+  </section>
+
+  <!-- ⑤ 案件別 -->
+  <section id="case-prev">
+    <h2>⑤ 案件別 応募数（長期案件）</h2>
+    <div class="chart-grid">
+      <div class="table-card">
+        <table>
+          <thead><tr><th>クライアント</th><th>応募数</th></tr></thead>
+          <tbody>
+            <tr class="highlight-row"><td>石下様（I系：I-2 5件・I-4 1件）</td><td>6</td></tr>
+            <tr class="highlight-row"><td>平林様（H系：H-4）</td><td>2</td></tr>
+            <tr class="highlight-row"><td>吉田様（Y系：Y-31 7件・Y-25 6件・Y-3 4件・Y-46 2件）</td><td>19</td></tr>
+            <tr class="highlight-row"><td>奥山様（O系：O-13）</td><td>1</td></tr>
+            <tr class="highlight-row"><td>須藤様（S系：S-3 1件・S-7 1件）</td><td>2</td></tr>
+            <tr style="font-weight:700;background:#f0f9ff;"><td>合計</td><td>30</td></tr>
+          </tbody>
+        </table>
+        <div class="footnote">※シートの案件No別集計（30件）に基づく。長期案件全応募数(32件)との差2件は案件No未登録の応募です。</div>
+      </div>
+      <div class="chart-card">
+        <h3>クライアント別 応募数</h3>
+        <div class="chart-wrap"><canvas id="caseChartPrev"></canvas></div>
+      </div>
+    </div>
+    <div class="comment">
+      <div class="ctitle">💬 コメント</div>
+      <strong>吉田様（Y系）が19件</strong>と長期案件応募の6割超を占め、特にY-31（7件）・Y-25（6件）の2案件で13件を稼いでいます。
+      一方、須藤様・奥山様は応募が伸びていません。案件数（求人母数）がI・Y系より少ないことも一因ですが、応募がほぼゼロの案件が並んでいる以上、
+      <strong>求人原稿の訴求内容自体の見直し</strong>も必要です。
+    </div>
+  </section>
+
+  <!-- ⑥ 総評 -->
+  <section id="eval-prev">
+    <h2>⑥ 総評（2026年6月）</h2>
+
+    <div class="conclusion">
+      <span class="badge">結論</span>
+      6月の有効応募は<strong>20件（対全体6.9%）</strong>。長期案件への応募32件のうち20件（<strong>62.5%</strong>）が有効となっており、応募後の質・選考プロセス自体は良好です
+      （面談は設定7件中6件を実施、確定した結果は採用2件・本人辞退1件）。吉田様（Y系）案件を中心に応募が集まる案件は明確で、最大の課題は<strong>長期案件への応募数そのものが少ないこと</strong>です。
+    </div>
+
+    <div class="analysis-card">
+      <div class="analysis-row"><div class="alabel al-problem">問題</div>
+        <div class="atext">有効応募20件のうち、面談を設定できたのは7件（35%）に留まる。設定した面談はほぼ実施できている（7件中6件・85.7%）ため、ボトルネックは「面談を設定するところまで」に集中している。なお、長期案件への応募数自体も少ない状態（全応募291件中32件・11.0%）が続いており、応募受付以降のプロセス改善と並行して注視が必要です。</div></div>
+      <div class="analysis-row"><div class="alabel al-issue">課題</div>
+        <div class="atext"><ul>
+          <li>面談未設定13件のうち8件が「一定期間連絡とれず（架電3回・メッセージ送付済）」で、初回コンタクトの成功率が低い</li>
+          <li>実施済み面談6件のうち、結果が確定しているのは3件（採用2・本人辞退1）で、残り3件は結果待ち</li>
+          <li>長期案件への応募は32件（全体の11.0%）で、有効応募20件（対全体6.9%）を生む母数としても限られている</li>
+        </ul></div></div>
+      <div class="analysis-row"><div class="alabel al-cause">原因</div>
+        <div class="atext"><ul>
+          <li>初回の架電・メッセージでの接触率が低く、連絡が取れないまま辞退扱いになるケースがある</li>
+          <li>長期案件への応募数自体が少ないのは掲載条件・訴求内容など募集要因側の影響も大きいため、運用予算や原稿の見直しを検討</li>
+        </ul></div></div>
+      <div class="analysis-row"><div class="alabel al-action">対策</div>
+        <div class="atext"><ul>
+          <li>実施済み面談6件のうち結果未確定の3件について、選考結果の記録・フォローを早める</li>
+          <li>面談を実施できれば採用に至りやすいため（実施6件中2件採用）、まずは設定率を上げることに集中する</li>
+          <li>長期案件の応募数についても継続的にモニタリングし、必要に応じて掲載内容や媒体運用の改善を提案</li>
+        </ul></div></div>
+    </div>
+  </section>
+
+</div>
+
+  <footer>
+    東京スタッフサービス様 応募品質レポート｜今月：2026年7月（進行中・7/1〜7/6）／前月：2026年6月（確定）｜作成日：2026年7月6日｜Trust Lead株式会社
+  </footer>
+</div>
+
+<script>
+const NAVY='#0a2342', BLUE='#2563a8', RED='#dc2626', GREEN='#16a34a', YELLOW='#d97706';
+const LBLUE='#93c5fd', LRED='#fca5a5', LGREEN='#86efac', SLATE='#94a3b8';
+Chart.defaults.font.family="'Helvetica Neue',Arial,'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif";
+Chart.defaults.font.size=12;
+
+function buildCurCharts(){
+  new Chart(document.getElementById('funnelChartCur'),{
+    type:'doughnut',
+    data:{labels:['長期案件・有効','長期案件・無効','短期案件（対象外）','その他・選考中等'],
+      datasets:[{data:[4,1,85,8],backgroundColor:[GREEN,YELLOW,LRED,SLATE],borderWidth:2,borderColor:'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom'},
+        tooltip:{callbacks:{label:c=>c.label+': '+c.parsed+'件 ('+(c.parsed/98*100).toFixed(1)+'%)'}}}}
+  });
+
+  new Chart(document.getElementById('stageChartCur'),{
+    type:'bar',
+    data:{labels:['全応募','長期案件','有効応募','面談設定'],
+      datasets:[{data:[98,5,4,1],backgroundColor:[NAVY,BLUE,GREEN,RED],borderRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+'件'}}},
+      scales:{y:{beginAtZero:true,ticks:{precision:0}}}}
+  });
+
+  new Chart(document.getElementById('invalidChartCur'),{
+    type:'bar',
+    data:{labels:['年齢対象外','重複応募','外国籍'],
+      datasets:[{data:[1,0,0],backgroundColor:[RED,YELLOW,LBLUE],borderRadius:6}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.x+'件'}}},
+      scales:{x:{beginAtZero:true,ticks:{precision:0}}}}
+  });
+
+  new Chart(document.getElementById('ageChartCur'),{
+    type:'bar',
+    data:{labels:['18歳以下','18-19','20代','30代','40代','50代','60歳以上'],
+      datasets:[{label:'長期案件応募者',data:[1,1,0,0,1,2,8],backgroundColor:BLUE,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{y:{beginAtZero:true,ticks:{precision:0}}}}
+  });
+
+  new Chart(document.getElementById('caseChartCur'),{
+    type:'bar',
+    data:{labels:['石下様','平林様','吉田様','奥山様','須藤様'],
+      datasets:[{data:[1,1,2,0,1],backgroundColor:BLUE,borderRadius:6}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.x+'件'}}},
+      scales:{x:{beginAtZero:true,ticks:{precision:0}}}}
+  });
+}
+
+function buildPrevCharts(){
+  new Chart(document.getElementById('funnelChartPrev'),{
+    type:'doughnut',
+    data:{labels:['長期案件・有効','長期案件・無効','短期案件（対象外）','その他・選考中等'],
+      datasets:[{data:[20,12,243,16],backgroundColor:[GREEN,YELLOW,LRED,SLATE],borderWidth:2,borderColor:'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom'},
+        tooltip:{callbacks:{label:c=>c.label+': '+c.parsed+'件 ('+(c.parsed/291*100).toFixed(1)+'%)'}}}}
+  });
+
+  new Chart(document.getElementById('stageChartPrev'),{
+    type:'bar',
+    data:{labels:['全応募','長期案件','有効応募','面談設定'],
+      datasets:[{data:[291,32,20,7],backgroundColor:[NAVY,BLUE,GREEN,RED],borderRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+'件'}}},
+      scales:{y:{beginAtZero:true,ticks:{precision:0}}}}
+  });
+
+  new Chart(document.getElementById('invalidChartPrev'),{
+    type:'bar',
+    data:{labels:['年齢対象外','重複応募','外国籍'],
+      datasets:[{data:[11,1,0],backgroundColor:[RED,YELLOW,LBLUE],borderRadius:6}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.x+'件'}}},
+      scales:{x:{beginAtZero:true,ticks:{precision:0}}}}
+  });
+
+  new Chart(document.getElementById('ageChartPrev'),{
+    type:'bar',
+    data:{labels:['18歳以下','18-19','20代','30代','40代','50代','60歳以上'],
+      datasets:[{label:'長期案件応募者',data:[3,4,4,3,7,8,19],backgroundColor:BLUE,borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{y:{beginAtZero:true,ticks:{precision:0}}}}
+  });
+
+  new Chart(document.getElementById('caseChartPrev'),{
+    type:'bar',
+    data:{labels:['石下様','平林様','吉田様','奥山様','須藤様'],
+      datasets:[{data:[6,2,19,1,2],backgroundColor:BLUE,borderRadius:6}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.x+'件'}}},
+      scales:{x:{beginAtZero:true,ticks:{precision:0}}}}
+  });
+}
+
+buildCurCharts();
+let prevBuilt=false;
+
+document.querySelectorAll('.month-tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.month-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const tab=btn.dataset.tab;
+    document.getElementById('panel-cur').classList.toggle('active',tab==='cur');
+    document.getElementById('panel-prev').classList.toggle('active',tab==='prev');
+    if(tab==='prev' && !prevBuilt){ buildPrevCharts(); prevBuilt=true; }
+  });
+});
+</script>
+</body>
+</html>
